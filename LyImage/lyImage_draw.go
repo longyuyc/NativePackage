@@ -7,6 +7,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"log"
+	"math"
 	"os"
 )
 
@@ -78,45 +79,55 @@ func Abs(x int) int {
 	return -x
 }
 
-/*
-func drawline(x0, y0, x1, y1 int, brush Putpixel) {
-    dx := abs(x1 - x0)
-    dy := abs(y1 - y0)
-    sx, sy := 1, 1
-    if x0 >= x1 {
-    sx = -1
-    }
-    if y0 >= y1 {
-    sy = -1
-    }
-    err := dx - dy
+type Putpixel func(x, y int)
 
-    for {
-    brush(x0, y0)
-    if x0 == x1 && y0 == y1 {
-        return
-    }
-    e2 := err * 2
-    if e2 > -dy {
-        err -= dy
-        x0 += sx
-    }
-    if e2 < dx {
-        err += dx
-        y0 += sy
-    }
-    }
+func drawLine(x0, y0, x1, y1 int, brush Putpixel) {
+	dx := math.Abs(float64(x1 - x0))
+	dy := math.Abs(float64(y1 - y0))
+	sx, sy := 1, 1
+	if x0 >= x1 {
+		sx = -1
+	}
+	if y0 >= y1 {
+		sy = -1
+	}
+	err := dx - dy
+	for {
+		brush(x0, y0)
+		if x0 == x1 && y0 == y1 {
+			return
+		}
+		e2 := err * 2
+		if e2 > -dy {
+			err -= dy
+			x0 += sx
+		}
+		if e2 < dx {
+			err += dx
+			y0 += sy
+		}
+	}
 }
 
+func DrawLineAdnSave() {
+	const (
+		dx = 300
+		dy = 500
+	)
+	//需要保存的文件
+	//新建一个指定大小的RGBA位图
+	//NewNRGBA函数创建并返回一个具有指定范围的NRGBA。
+	//NRGBA类型代表一幅内存中的图像，其At方法返回color.NRGBA类型的值
+	img := image.NewNRGBA(image.Rect(0, 0, dx, dy))
+	drawLine(5, 5, dx-8, dy-10, func(x, y int) {
+
+	})
+}
+
+/*
+
 func main() {
-
-    const (
-    dx = 300
-    dy = 500
-    )
-
     // 需要保存的文件
-
     // 新建一个 指定大小的 RGBA位图
     img := image.NewNRGBA(image.Rect(0, 0, dx, dy))
 
