@@ -1,4 +1,4 @@
-package main
+package LyImage
 
 import (
 	"fmt"
@@ -10,11 +10,6 @@ import (
 	"math"
 	"os"
 )
-
-func main() {
-	DrawVerticalLine()
-	DrawHorizLine()
-}
 
 //画垂直线
 func DrawVerticalLine() {
@@ -120,8 +115,22 @@ func DrawLineAdnSave() {
 	//NRGBA类型代表一幅内存中的图像，其At方法返回color.NRGBA类型的值
 	img := image.NewNRGBA(image.Rect(0, 0, dx, dy))
 	drawLine(5, 5, dx-8, dy-10, func(x, y int) {
-
+		img.Set(x, y, color.RGBA{uint8(x), uint8(y), 0, 255})
 	})
+	//左右都画一条竖线
+	for i := 0; i < dy; i++ {
+		img.Set(0, i, color.Black)
+		img.Set(dx-1, i, color.Black)
+	}
+	//imgcounter := 250
+	//imgfile, _ := os.Create(fmt.Sprintf("%03d.png", imgcounter))
+	imgfile, _ := os.Create("Image\\250.png")
+	defer imgfile.Close()
+	//以PNG格式保存文件
+	err := png.Encode(imgfile, img)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 /*

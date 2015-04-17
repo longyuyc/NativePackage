@@ -1,4 +1,4 @@
-package main
+package LyImage
 
 import (
 	"fmt"
@@ -9,10 +9,7 @@ import (
 	"os"
 )
 
-func main() {
-	CreateThumbnails()
-}
-
+//创建缩略图
 func CreateThumbnails() {
 	f1, err := os.Open("1.jpg")
 	if err != nil {
@@ -25,13 +22,6 @@ func CreateThumbnails() {
 		panic(err)
 	}
 	defer f2.Close()
-	/*
-		//f3, err := os.Open("3.jpg")
-		if err != nil {
-			panic(err)
-		}
-		defer f3.Close()
-	*/
 	m1, err := jpeg.Decode(f1)
 	if err != nil {
 		panic(err)
@@ -49,9 +39,5 @@ func CreateThumbnails() {
 	draw.Draw(m, bounds, m1, image.ZP, draw.Src)
 	draw.Draw(m, image.Rect(100, 200, 300, 600), m2, image.Pt(250, 60), draw.Src)
 
-	//err = jpeg.Encode(f3, m, &jpeg.Options{90})
-	//if err != nil {
-	//	panic(err)
-	//}
 	fmt.Println("ok\n")
 }
